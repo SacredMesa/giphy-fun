@@ -26,7 +26,7 @@ const app = express();
 
 // Configure express
 app.use(express.static(__dirname + '/public'));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/static'));
 
 // Configure handlebars
 app.engine('hbs', handlebars({
@@ -46,17 +46,14 @@ app.get('/', (req, res) => {
 app.get('/search', async (req, res) => {
     res.status(200);
     res.type('text/html');
-    res.render('giffed');
 
     const search = req.query['term'];
-
-    console.log('term: ', search);
 
     const url = withQuery(
         ENDPOINT, {
             q: search,
             api_key: API_KEY,
-            limit: 10,
+            limit: 50,
             offset: 0,
             rating: 'g',
             lang: 'en'
@@ -66,13 +63,20 @@ app.get('/search', async (req, res) => {
     let result = await fetch(url);
 
     try {
-        let gifs = await result.json();
-        console.log(gifs);
+        let rawGif = await result.json();
+        // console.log(rawGif);
+
+        let urlArr = [];
+        for (let i = 0; i < rawGif.data.length; i++) {
+            urlArr.push(rawGif.data[i].images.fixed_height.url);
+        }
+
+        res.render('giffed', {urlArr});
+
     } catch (e) {
         console.error('error');
-        return Pormise.reject(e);
+        return Promise.reject(e);
     }
-
 })
 
 // Start express server

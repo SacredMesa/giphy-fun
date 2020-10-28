@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/stylesheets/style.css">
+
   <title>Fun with Giphy</title>
 </head>
 
@@ -11,17 +14,19 @@
   <main>
 
     <div class="header-container">
-      <h1>Fun with GIPHY</h1>
+      <h1>GIF up your life</h1>
 
       <form action="/search" method="GET">
 
-        <input type="text" name="term" placeholder="Search for a GIF!" class="search-bar">
+        <input type="text" name="term" placeholder="Search for a GIF!" size="50" class="search-bar">
 
         <button type="submit">Search</button>
       </form>
     </div>
-
-    {{{body}}}
+    
+    <div class="image-container">
+      {{{body}}}
+    </div>
 
   </main>
 </body>
