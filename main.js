@@ -64,14 +64,23 @@ app.get('/search', async (req, res) => {
 
     try {
         let rawGif = await result.json();
-        // console.log(rawGif);
 
-        let urlArr = [];
-        for (let i = 0; i < rawGif.data.length; i++) {
-            urlArr.push(rawGif.data[i].images.fixed_height.url);
-        }
+        // let urlArr = [];
+        // for (let i = 0; i < rawGif.data.length; i++) {
+        //     urlArr.push(rawGif.data[i].images.fixed_height.url);
+        // }
 
-        res.render('giffed', {urlArr});
+        //Refactor from for loop above:
+        const urlArr = rawGif.data.map(
+            i => {
+                return i.images.fixed_height.url
+            }
+        )
+
+        res.render('giffed', {
+            urlArr,
+            hasContent: !!urlArr.length
+        });
 
     } catch (e) {
         console.error('error');
